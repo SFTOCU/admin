@@ -1,5 +1,3 @@
-alert(window.innerWidth);
-
 var smartView = false;
 var contentWidth = 100;
 var contentHeight = 100;
@@ -26,6 +24,7 @@ window.onload = function () {
                 this.login = true;
             },
             logOut:function(){
+                alert(window.innerWidth);
                 this.login = false;   
             },
         }
