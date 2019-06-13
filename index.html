@@ -1,0 +1,39 @@
+<! doctype = html>
+<html lang=ja>
+    <head>
+        <title>支部員ツール</title>
+        <meta name="viewport" content=”width=device-width, initial-scale=1.0″/>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="./style.css"/>
+    </head>
+    <body>
+        <div id="app">
+            <div id="bg">
+                <div class="header">
+                    <ul>
+                        <li>
+                            <ul>
+                                <li>支部員ツール</li>
+                                <li v-if="!login">ゲスト様</li>
+                                <li v-else>{{userName}} でログイン中</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button v-if="!login" v-on:click="logIn" id="loginButton">ログイン</button>
+                            <button v-if="login&&!liff" v-on:click="logOut" id="logoutButton">ログアウト</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content">
+                    <ul>
+                        <li v-bind:style="contentStyle"><span></span><span>在庫管理</span><span></span></li>
+                        <li v-bind:style="contentStyle"><span></span><span>会計処理</span><span></span></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="mask"></div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="./script.js"></script>
+    </body>
+</html>

@@ -1,0 +1,48 @@
+*{
+    border:none 1px skyblue;
+}
+
+.smartView .header{
+    
+}
+.header ul{
+    display:flex;
+    list-style: none;
+    padding: 0;
+}
+
+.smartView .header>ul{
+    flex-direction: row;
+    align-items: center;
+}
+.smartView .header>ul>li:first-child{
+    flex-grow: 4;
+}
+.smartView .header>ul>li:last-child{
+    
+}
+.smartView .header>ul ul{
+    flex-direction: column;
+}
+.smartView .header>ul ul>li:first-child{
+    font-size:2em;
+}
+
+.smartView .content ul{
+    list-style: none;
+    padding:0;
+    display:flex;
+    align-content: space-between;
+}
+.smartView .content li{
+    display:flex;
+    flex-direction: column;
+    text-align: center;
+    font-size:1.8em;
+    margin:5px;
+    border:ridge 10px lightblue;
+    background-color:aliceblue;
+}
+.smartView .content li span{
+    height:33%;
+}
