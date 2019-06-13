@@ -1,8 +1,9 @@
-var smartView = false;
-var contentWidth = 100;
-var contentHeight = 100;
-var device = "pc";
+
 window.onload = function () {
+    var smartView = false;
+    var contentWidth = 100;
+    var contentHeight = 100;
+    var device = "pc";
     var ua = navigator.userAgent;
     if (ua.indexOf('iPhone') > 0 || ua.indexOf('Android') > 0 && ua.indexOf('Mobile') > 0) {
         device = "mobile";// スマートフォン用コード
