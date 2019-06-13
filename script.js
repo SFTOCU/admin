@@ -1,3 +1,5 @@
+alert(window.innerWidth);
+
 var smartView = false;
 var contentWidth = 100;
 var contentHeight = 100;
