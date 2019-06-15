@@ -2,6 +2,22 @@
     border:none 1px skyblue;
 }
 
+#app{
+    position:relative;
+}
+#app>div{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+}
+.regiform{
+    background-color: aliceblue;
+}
+.regiform ul{
+    list-style: none;
+}
+
 .smartView .header{
     
 }
@@ -28,21 +44,19 @@
     font-size:2em;
 }
 
-.smartView .content ul{
+.smartView .mainmenu ul{
     list-style: none;
     padding:0;
     display:flex;
-    align-content: space-between;
+    justify-content:space-around;
+    flex-wrap: wrap;
 }
-.smartView .content li{
+.smartView .mainmenu a{
     display:flex;
     flex-direction: column;
-    text-align: center;
-    font-size:1.8em;
-    margin:5px;
-    border:ridge 10px lightblue;
-    background-color:aliceblue;
+    height: 100%;
+    width:100%;
 }
-.smartView .content li span{
-    height:33%;
+.smartView .mainmenu li span{
+    height:30%;
 }
