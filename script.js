@@ -4,14 +4,14 @@ window.onload = function () {
     var contentHeight = 100;
     var device = "pc";
     var ua = navigator.userAgent;
-    var payload = {
+    payload = {
         command:"",
         userId:"pcUser",
         password:"",
         studentNumber:"",
-        isSaved:"true"
+        isSaved:"false"
     };
-    var mainData = {};
+    mainData = {};
     
     if (ua.indexOf('iPhone') > 0 || ua.indexOf('Android') > 0 && ua.indexOf('Mobile') > 0) {
         device = "mobile";// スマートフォン用コード
@@ -33,7 +33,6 @@ window.onload = function () {
             maskview:false, 
             pwview:false,
             userName:"",
-            userId:"",
             studentNumber:"",
             password:"",
             contentStyle:{
@@ -56,6 +55,8 @@ window.onload = function () {
                 payload.password = this.password;
                 payload.studentNumber = this.studentNumber;
                 payload.command = "login";
+                postData(function (res){alert(res);});
+                
             },
             logOut:function(){
                 this.login = false;   
@@ -71,8 +72,16 @@ window.onload = function () {
                 });
             },
             register:function(){
+                if(payload.userId == "pcUser")return alert("この操作はLINEからしか行えません");
                 if(this.userName==""||this.studentNumber==""||this.password=="")return alert("全ての入力欄を埋めてください。");
                 if(!confirm("氏名:"+this.userName+"\n学籍番号:"+this.studentNumber+"\nPW:"+this.password+"\nで登録します。"))return alert("キャンセルさしました");
+                payload.password = this.password;
+                payload.studentNumber = this.studentNumber;
+                payload.command = "register";
+                payload.isSaved = "false";
+                mainData.userName = this.userName;
+                payload.data = JSON.stringify(mainData);
+                postData(function (res){alert(res);});
             }
         }
     });
@@ -81,7 +90,7 @@ window.onload = function () {
     };
     liff.init(
         data => {
-            myApp.userId = data.context.userId;
+            payload.userId = data.context.userId;
             myApp.liff = true;
             if(!myApp.login)myApp.logIn();
         },
@@ -94,22 +103,27 @@ window.onload = function () {
 };
 
 var xhr = new XMLHttpRequest();
-function postData(data,func){
-    xhr.open("post", );
-    xhr.send();
+
+function postData(func){
+    xhr.open("post", "https://script.google.com/macros/s/AKfycbzcLvKnI694cSQ5s1QGMyrmv2leXfw_aP57kmdFGk6K0KsVbmE/exec");
+    
+    xhr.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+
+// データをリクエスト ボディに含めて送信する
+    xhr.send(serialize(payload));
     xhr.onreadystatechange = function() {
- 
-        if(1) {
- 
+        alert([xhr.readyState,xhr.status]);
+        if(xhr.readyState === 4 && xhr.status === 200) {
+            func(xhr.response);
         //データを取得した後の処理を書く
         }
-    }
+    };
 }
 
 function serialize(data) {
     var key, value, type, i, max;
     var encode = window.encodeURIComponent;
-    var query = '?';
+    var query = '';
  
     for (key in data) {
         value = data[key];

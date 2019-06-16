@@ -39,7 +39,7 @@
                         <li><label>学籍番号:</label><input v-on:change="snCheck" type="text" v-model="studentNumber" placeholder = "学籍番号を入力"></li>
                         <li><label>パスワード:</label><input v-model="password" v-bind:type="pwview?'text':'password'" /><button v-on:click="pwViewClick">PW表示</button></li>
                     </ul>
-                    <button v-on:click="register">入力確認</button>
+                    <button v-on:click="register">登録</button>
                 </div>
                 <div v-if="view=='#login'" class="loginform">
                     <h2>ログイン</h2>
@@ -47,6 +47,7 @@
                         <li><label>学籍番号:</label><input v-on:change="snCheck" type="text" v-model="studentNumber" placeholder = "A12SA777"></li>
                         <li><label>パスワード:</label><input v-model="password" type="password" /></li>
                     </ul>
+                    <p>初めての人は<a href = "#register">支部員登録</a>から</p>
                 </div>
             </div>
             <div id="mask" v-show="maskview">読み込み中・・・</div>
