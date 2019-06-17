@@ -7,8 +7,6 @@ window.onload = function () {
     payload = {
         command:"",
         userId:"pcUser",
-        password:"",
-        studentNumber:"",
         isSaved:"false"
     };
     mainData = {};
@@ -24,12 +22,13 @@ window.onload = function () {
         contentWidth = Math.round(window.innerWidth/2)-40;
         contentHeight = contentWidth;
     }
+    location.hash = (location.hash!=""?location.hash:"#home");
     myApp = new Vue({
         el:"#app",
         data:{
             login:false,
             liff:false,
-            view:"#home",
+            view:location.hash,
             maskview:false, 
             pwview:false,
             userName:"",
@@ -47,19 +46,35 @@ window.onload = function () {
         },
         methods:{
             logIn:function(){
+                if(this.liff){
+                    payload.command = "liff";
+                    postData(function (res){
+                        if(!res.success)return alert(res);
+                        myApp.userName = res.data.userName;
+                        myApp.password = res.data.password;
+                        myApp.login = true;
+                        myApp.view = location.hash;
+                    });
+                }
                 if(this.studentNumber==""||this.password==""){
-                    location.hash="#login";
-                    this.view = "#login";
-                    return alert("学籍番号とパスワードを入力してください");
+                    if(this.view!="#login")return this.view = "#login";
+                    else return alert("学籍番号とパスワードを入力してください");
                 }
                 payload.password = this.password;
                 payload.studentNumber = this.studentNumber;
                 payload.command = "login";
-                postData(function (res){alert(res);});
+                postData(function (res){
+                    if(!res.success)return alert(res);
+                    myApp.userName = res.data.userName;
+                    myApp.password = res.data.password;
+                    myApp.login = true;
+                    myApp.view = location.hash;
+                });
                 
             },
             logOut:function(){
-                this.login = false;   
+                this.login = false; 
+                myApp.password = "";
             },
             pwViewClick:function(){
                 this.pwview = !this.pwview;
@@ -86,7 +101,7 @@ window.onload = function () {
         }
     });
     window.onhashchange = function(){
-        myApp.view = (location.hash!=""?location.hash:"#home");   
+        myApp.view = location.hash;   
     };
     liff.init(
         data => {
@@ -96,7 +111,7 @@ window.onload = function () {
         },
         err => {
             myApp.liff = false;
-            location.hash = "#login";
+            myApp.view = "#login";
         }
     );
     
@@ -108,13 +123,14 @@ function postData(func){
     xhr.open("post", "https://script.google.com/macros/s/AKfycbzcLvKnI694cSQ5s1QGMyrmv2leXfw_aP57kmdFGk6K0KsVbmE/exec");
     
     xhr.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
-
+    
+    myApp.maskview = true;
 // データをリクエスト ボディに含めて送信する
     xhr.send(serialize(payload));
     xhr.onreadystatechange = function() {
-        alert([xhr.readyState,xhr.status]);
         if(xhr.readyState === 4 && xhr.status === 200) {
-            func(xhr.response);
+            myApp.maskview = false;
+            func(JSON.parse(xhr.response));
         //データを取得した後の処理を書く
         }
     };
