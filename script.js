@@ -64,7 +64,7 @@ window.onload = function () {
                 payload.studentNumber = this.studentNumber;
                 payload.command = "login";
                 postData(function (res){
-                    if(!res.success)return alert(res);
+                    if(!res.success)return alert(JSON.stringify(res));
                     myApp.userName = res.data.userName;
                     myApp.password = res.data.password;
                     myApp.login = true;
