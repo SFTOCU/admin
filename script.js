@@ -107,6 +107,7 @@ window.onload = function () {
         data => {
             payload.userId = data.context.userId;
             myApp.liff = true;
+            location.hash  = "#"+location.search.slice(1);
             if(!myApp.login)myApp.logIn();
         },
         err => {
