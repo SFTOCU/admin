@@ -34,14 +34,10 @@ window.onload = function () {
             userName:"",
             studentNumber:"",
             password:"",
+            hashedPass:"",
             contentStyle:{
                 width:contentWidth,
                 height:contentHeight,
-                textAlign:"center",
-                fontSize:"1.8em",
-                margin:"3px",
-                border:"ridge 10px lightblue",
-                backgroundColor:"aliceblue",
             }
         },
         methods:{
@@ -51,7 +47,7 @@ window.onload = function () {
                     return postData(function (res){
                         if(!res.success)return alert(JSON.stringify(res));
                         myApp.userName = res.data.userName;
-                        myApp.password = res.data.password;
+                        myApp.hashedPass = res.data.password;
                         myApp.login = true;
                         myApp.view = location.hash;
                     });
@@ -66,7 +62,7 @@ window.onload = function () {
                 postData(function (res){
                     if(!res.success)return alert(JSON.stringify(res));
                     myApp.userName = res.data.userName;
-                    myApp.password = res.data.password;
+                    myApp.hashedPass = res.data.password;
                     myApp.login = true;
                     myApp.view = location.hash;
                 });
@@ -75,6 +71,7 @@ window.onload = function () {
             logOut:function(){
                 this.login = false; 
                 myApp.password = "";
+                myApp.view = "#login";
             },
             pwViewClick:function(){
                 this.pwview = !this.pwview;

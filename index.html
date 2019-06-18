@@ -26,10 +26,10 @@
                 </div>
                 <div v-if="view=='#home'" class="mainmenu">
                     <ul>
-                        <li v-bind:style="contentStyle"><a><span></span><span>在庫管理</span><span></span></a></li>
-                        <li v-bind:style="contentStyle"><a><span></span><span>購入処理</span><span></span></a></li>
-                        <li v-bind:style="contentStyle"><a><span></span><span>予約管理</span><span></span></a></li>
-                        <li v-bind:style="contentStyle"><a href = "#register"><span></span><span>登録変更</span><span></span></a></li>
+                        <li v-bind:style="contentStyle" v-bind:class="{ activeMenu: login, nonactiveMenu: !login}"><a><span></span><span>在庫管理</span><span></span></a></li>
+                        <li v-bind:style="contentStyle" v-bind:class="{ activeMenu: login, nonactiveMenu: !login}"><a><span></span><span>購入処理</span><span></span></a></li>
+                        <li v-bind:style="contentStyle" v-bind:class="{ activeMenu: login, nonactiveMenu: !login}"><a><span></span><span>予約管理</span><span></span></a></li>
+                        <li v-bind:style="contentStyle" v-bind:class="{ activeMenu: login, nonactiveMenu: !login}"><a href = "#register"><span></span><span>登録変更</span><span></span></a></li>
                     </ul>
                 </div>
                 <div v-if="view=='#register'" class="regiform">
@@ -43,11 +43,13 @@
                 </div>
                 <div v-if="view=='#login'" class="loginform">
                     <h2>ログイン</h2>
-                    <ul>
-                        <li><label>学籍番号:</label><input v-on:change="snCheck" type="text" v-model="studentNumber" placeholder = "A12SA777"></li>
-                        <li><label>パスワード:</label><input v-model="password" type="password" /></li>
-                    </ul>
                     <p>初めての人は<a href = "#register">支部員登録</a>から</p>
+                    <ul>
+                        <li><label>学籍番号:</label><input v-on:change="snCheck" type="text" v-model="studentNumber" placeholder = "学籍番号"></li>
+                        <li><label>パスワード:</label><input v-model="password" type="password" /></li>
+                        <li><label>ログイン状態を保持</label><input type="check">
+                    </ul>
+                    
                 </div>
             </div>
             <div id="mask" v-show="maskview"><span></span><span>読み込み中・・・</span><span></span></div>

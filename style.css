@@ -2,6 +2,10 @@
     border:none 1px skyblue;
 }
 
+a{
+    text-decoration-line: none;
+}
+
 #app>div{
     position:fixed;
     top:0;
@@ -61,6 +65,12 @@
     justify-content:space-around;
     flex-wrap: wrap;
 }
+.smartView .mainmenu li{
+    text-align:center;
+    font-size:1.8em;
+    margin:3px;
+}
+
 .smartView .mainmenu a{
     display:flex;
     flex-direction: column;
@@ -69,4 +79,15 @@
 }
 .smartView .mainmenu li span{
     height:30%;
+}
+
+.smartView .nonactiveMenu{
+    border:ridge 10px lightgray;
+    background-color:lightgray;
+    pointer-events:none;
+}
+.smartView .activeMenu{
+    border:ridge 10px aliceblue;
+    background-color:aliceblue;
+    pointer-events:auto;
 }
