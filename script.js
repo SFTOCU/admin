@@ -106,7 +106,7 @@ window.onload = function () {
                 payload.data = JSON.stringify(mainData);
                 postData(function (res){
                     alert("登録完了しました。\nアカウントが有効になるのを待って、再度アクセスしてください。\n"+JSON.stringify(res));
-                    myApp.view = "#home";
+                    location.hash = "#home";
                 });
             }
         }
