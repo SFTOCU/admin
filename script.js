@@ -29,7 +29,6 @@ window.onload = function () {
             login:false,
             liff:false,
             view:location.hash,
-            willsave:false,
             maskview:false, 
             pwview:false,
             userName:"",
@@ -66,7 +65,7 @@ window.onload = function () {
                     myApp.hashedPass = res.data.password;
                     myApp.login = true;
                     myApp.view = location.hash;
-                    if(document.getElementById("login_saved").value){
+                    if(document.getElementById("login_saved").checked){
                         document.cookie = "password="+res.data.password+"; max-age=8640000;";
                         document.cookie = "studentNumber="+myApp.studentNumber+"; max-age=8640000;";
                         alert(document.cookie);
@@ -115,7 +114,28 @@ window.onload = function () {
         },
         err => {
             myApp.liff = false;
-            myApp.view = "#login";
+            if(document.cookie.length>0){
+                var buf = document.cookie.split(",");
+                var cookies = {};
+                for(var i = 0;i<buf.length;i++){
+                    var buf2 = buf[i].trim().split("=");
+                    cookies[buf2[0]] = buf2[1];
+                }
+                payload.command = "login";
+                payload.password = cookies.password;
+                payload.studentNumber = cookies.studentNumber;
+                payload.isSaved = "true";
+                postData(function(res){ 
+                    if(!res.success){
+                        myApp.view = "#login";
+                        return alert(JSON.stringify(res));
+                    }
+                    myApp.userName = res.data.userName;
+                    myApp.hashedPass = res.data.password;
+                    myApp.login = true;
+                });
+            }
+            else myApp.view = "#login";
         }
     );
     
