@@ -45,7 +45,10 @@ window.onload = function () {
                 if(this.liff){
                     payload.command = "liff";
                     return postData(function (res){
-                        if(!res.success)return alert(JSON.stringify(res));
+                        if(!res.success){
+                            myApp.view = "#login";
+                            return alert(JSON.stringify(res));
+                        }
                         myApp.userName = res.data.userName;
                         myApp.hashedPass = res.data.password;
                         myApp.login = true;
