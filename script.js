@@ -66,7 +66,7 @@ window.onload = function () {
                     myApp.hashedPass = res.data.password;
                     myApp.login = true;
                     myApp.view = location.hash;
-                    if(myApp.willsave){
+                    if(document.getElementById("login_saved").value){
                         document.cookie = "password="+res.data.password+"; max-age=8640000;";
                         document.cookie = "studentNumber="+myApp.studentNumber+"; max-age=8640000;";
                         alert(document.cookie);
