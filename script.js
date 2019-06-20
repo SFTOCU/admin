@@ -115,7 +115,7 @@ window.onload = function () {
         err => {
             myApp.liff = false;
             if(document.cookie.length>0){
-                var buf = document.cookie.split(",");
+                var buf = document.cookie.split(";");
                 var cookies = {};
                 for(var i = 0;i<buf.length;i++){
                     var buf2 = buf[i].trim().split("=");
