@@ -29,6 +29,7 @@ window.onload = function () {
             login:false,
             liff:false,
             view:location.hash,
+            willsave:false,
             maskview:false, 
             pwview:false,
             userName:"",
@@ -65,6 +66,11 @@ window.onload = function () {
                     myApp.hashedPass = res.data.password;
                     myApp.login = true;
                     myApp.view = location.hash;
+                    if(myApp.willsave){
+                        document.cookie = "password="+res.data.password+"; max-age=8640000;";
+                        document.cookie = "studentNumber="+myApp.studentNumber+"; max-age=8640000;";
+                        alert(document.cookie);
+                    }
                 });
                 
             },

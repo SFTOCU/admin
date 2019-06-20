@@ -45,10 +45,11 @@
                     <h2>ログイン</h2>
                     <p>初めての人は<a href = "#register">支部員登録</a>から</p>
                     <ul>
-                        <li><label>学籍番号:</label><input v-on:change="snCheck" type="text" v-model="studentNumber" placeholder = "学籍番号"></li>
-                        <li><label>パスワード:</label><input v-model="password" type="password" /></li>
-                        <li><label>ログイン状態を保持</label><input type="check">
+                        <li><label for = "login_sn">学籍番号:</label><input id = "login_sn" v-on:change="snCheck" type="text" v-model="studentNumber" placeholder = "学籍番号"></li>
+                        <li><label for = "login_pw">パスワード:</label><input id= "login_pw" v-model="password" type="password" /></li>
+                        <li><label for = "login_saved">ログイン状態を保持:</label><input id="login_saved" v-model="willsave" type="checkbox" />
                     </ul>
+                    <div align="right"><button v-on:click = "logIn">ログイン</button></div>
                     
                 </div>
             </div>
