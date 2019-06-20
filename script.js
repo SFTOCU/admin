@@ -104,7 +104,10 @@ window.onload = function () {
                 payload.isSaved = "false";
                 mainData.userName = this.userName;
                 payload.data = JSON.stringify(mainData);
-                postData(function (res){alert(res);});
+                postData(function (res){
+                    alert("登録完了しました。\nアカウントが有効になるのを待って、再度アクセスしてください。\n"+JSON.stringify(res));
+                    myApp.view = location.hash;
+                });
             }
         }
     });
