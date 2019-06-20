@@ -75,6 +75,9 @@ window.onload = function () {
             },
             logOut:function(){
                 this.login = false; 
+                payload.isSaved = "false";
+                document.cookie = "password=; max-age=0;";
+                document.cookie = "studentNumber=; max-age=0;";
                 myApp.password = "";
                 myApp.view = "#login";
             },
