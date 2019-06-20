@@ -13,7 +13,7 @@
                     <ul>
                         <li>
                             <ul>
-                                <li>支部員ツール{{view}}</li>
+                                <li v-on:click="goHome">支部員ツール{{view}}</li>
                                 <li v-if="!login">ゲスト様</li>
                                 <li v-else>{{userName}} で<span v-if="!liff">外部ブラウザ</span><span v-else>LINE</span>からログイン中</li>
                             </ul>

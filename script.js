@@ -108,6 +108,10 @@ window.onload = function () {
                     alert("登録完了しました。\nアカウントが有効になるのを待って、再度アクセスしてください。\n"+JSON.stringify(res));
                     location.hash = "#home";
                 });
+            },
+            goHome:function(){
+                if(this.login)location.hash = "#home";
+                else view = "#login";
             }
         }
     });
