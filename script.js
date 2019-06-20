@@ -128,6 +128,7 @@ window.onload = function () {
                 postData(function(res){ 
                     if(!res.success){
                         myApp.view = "#login";
+                        payload.isSaved = "false";
                         return alert(JSON.stringify(res));
                     }
                     myApp.userName = res.data.userName;
