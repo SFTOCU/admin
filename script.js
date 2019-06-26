@@ -47,7 +47,7 @@ window.onload = function () {
                     return postData(function (res){
                         if(!res.success){
                             myApp.view = "#login";
-                            return alert(JSON.stringify(res));
+                            return alert("支部員登録がまだされていません");
                         }
                         myApp.userName = res.data.userName;
                         myApp.hashedPass = res.data.password;
@@ -71,7 +71,7 @@ window.onload = function () {
                     if(document.getElementById("login_saved").checked){
                         document.cookie = "password="+res.data.password+"; max-age=8640000;";
                         document.cookie = "studentNumber="+myApp.studentNumber+"; max-age=8640000;";
-                        alert(document.cookie);
+                        //alert(document.cookie);
                     }
                 });
                 
@@ -105,7 +105,7 @@ window.onload = function () {
                 mainData.userName = this.userName;
                 payload.data = JSON.stringify(mainData);
                 postData(function (res){
-                    alert("登録完了しました。\nアカウントが有効になるのを待って、再度アクセスしてください。\n"+JSON.stringify(res));
+                    alert("登録完了しました。\nアカウントが有効になるのを待って、再度アクセスしてください。");
                     location.hash = "#home";
                 });
             },
