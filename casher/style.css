@@ -1,0 +1,47 @@
+#main{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    padding:5px;
+}
+#control{
+    display:flex;
+}
+
+.bookList>ul{
+    list-style: none;
+    padding: 0;
+    display:flex;
+    justify-content: space-around;
+}
+.bookList input{
+    border: none;
+    width:5em;
+    font-size:1em;
+    text-align: right;
+}
+.reservationList>ul{
+    list-style: none;
+    padding: 0;
+    display:flex;
+    justify-content: space-around;
+}
+
+#sum>ul{
+    list-style: none;
+    padding: 0;
+}
+#sum>ul>li{
+    display:flex;
+    justify-content: space-between;
+}
+#buttons{
+    text-align: center;
+}
+#buttons button{
+    font-size:1.5em;
+    width:5em;
+    height: 2.5em;
+}
