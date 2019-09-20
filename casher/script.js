@@ -21,8 +21,6 @@ var app = new Vue({
             password:"",
         },
         bookList:[
-            {isbn:"000001", title:"title1", price:1000, code:"xxxx",reserved:true},
-            {isbn:"000000000001", title:"title2", price:undefined,code:"xxxx", reserved:true},
         ],
         cancelList:[],
         reservationList:[
@@ -71,14 +69,16 @@ var app = new Vue({
             }
             else if(x==-2)this.display_isbn = undefined;
             else if(this.display_isbn!=undefined){
-                if(x==9784&&this.display_isbn!="sft")return alert("このボタンは頭4文字を入力するときだけ使えます。")
+                if(x==9784&&this.display_isbn!="")return alert("このボタンは頭4文字を入力するときだけ使えます。")
                 this.display_isbn = this.display_isbn*10+x;
             }
             else this.display_isbn = x;
         },
-        deleteBook:function(x){
-            if(this.state!=1)return alert("購入取り消しはできません。現在の操作を完了してください。")
-            if(!confirm(this.bookList[x].title + "の購入をキャンセルします。"))return
+        deleteBook:function(x,direct){
+            if(direct==undefined){
+                if(this.state!=1)return alert("購入取り消しはできません。現在の操作を完了してください。")
+                if(!confirm(this.bookList[x].title + "の購入をキャンセルします。"))return
+            }
             if(this.bookList[x].reserved)return app.bookList.splice(x,1)[0]
             this.content.code = this.bookList[x].code;
             postData("cancel",function(data){
@@ -100,13 +100,15 @@ var app = new Vue({
             }
             if(this.state==1){
                 if(!confirm("読み込んだ全ての書籍を消去して購入処理を中止します"))return
+                var buf = [];
                 this.bookList.forEach((value)=>{
                     if(!value.reserved){
-                        postData("cancel",function(data){
-                            this.content.code = value.code;
-                            if(data.error||data.res.error)return alert(JSON.stringify(data))
-                        });
+                        buf.push(value.code);
                     }
+                });
+                app.content.codeList = buf;
+                postData("multicancel",function(data){
+                    if(data.error||data.res.error)return alert(JSON.stringify(data))
                 });
                 this.bookList = [];
             }
@@ -135,24 +137,49 @@ var app = new Vue({
         },
         confirmPurchase:function(){
             if(this.state!=4)return alert("購入処理を進められません。現在の操作を完了してください。")
-            alert("ありがとうございました");
-            this.display_priceSum = undefined;
-            this.display_payment = undefined;
-            this.buf_price=undefined;
-            this.display_change = undefined;
-            this.reservator = undefined;
-            this.reservatorId = undefined;
-            this.cancelList = new Array();
-            this.bookList = new Array();
-            this.state=1;
+            var buf = [];
+            this.bookList.forEach((value)=>{
+                buf.push(value.code);
+            });
+            this.content.codeList = buf;
+            postData("purchase",function(data){
+                if(data.error||data.res.error)return alert(JSON.stringify(data))
+                app.display_priceSum = undefined;
+                app.display_payment = undefined;
+                app.buf_price=undefined;
+                app.display_change = undefined;
+                app.reservator = undefined;
+                app.reservatorId = undefined;
+                app.cancelList = new Array();
+                app.bookList = new Array();
+                app.state=1;
+            });
         },
         showReservations:function(){
-            postData("inquiry",function(data){
-                if(data.error)return alert(data.error);
-                app.reservationList = data.res;
-                if(data.res.length==0)alert("予約はありません。");
-            })//予約の問い合わせ
+            
+                postData("inquiry",function(data){
+                    if(data.error)return alert(data.error);
+                    app.reservationList = data.res;
+                    if(data.res.length==0)alert("予約はありません。");
+                });//予約の問い合わせ
+            
             this.state=-1;
+        },
+        cancelReservation:function(x){
+            var msg = this.reservationList[x].reservator+" 様 の以下"+this.reservationList[x].books.length+"冊の予約を取り消します。"
+            this.reservationList[x].books.forEach((value)=>{
+                msg += ("\n・"+value.title);
+            });
+            if(!confirm(msg))return alert("予約取り消しを中止しました。")
+            var buf = [];
+            this.reservationList[x].books.forEach((value)=>{
+                buf.push(value.code);
+            });
+            this.content.codeList = buf;
+            postData("multicancel",function(data){
+                if(data.error||data.res.error)return alert(JSON.stringify(data))
+                app.reservationList.splice(x,1);
+            });
         },
         addCartFromReservation:function(x){
             var isbns = [];
@@ -165,21 +192,29 @@ var app = new Vue({
             if(this.reservatorId&&this.reservatorId!=this.reservationList[x].reservatorId)return alert("既に別のお客様の予約を読み込んでいます")
             var catChange=[];
             var catChange_isbn = [];
+            var catChange_code = [];
             for(var i in this.bookList){
                 if(this.bookList[i].code.indexOf(this.reservationList[x].code)!=-1){
                     return alert("既に読み込み済みの予約です")
                 }
                 isbns.forEach((value,index)=>{
-                    if(this.bookList[i].isbn==value){
-                        catChange.push(this.bookList[i].title);
-                        catChange_isbn.push(this.bookList[i].isbn)
-                        this.cancelList.push(this.bookList[i]);
-                        this.bookList[i].code = this.reservationList[x].books[index].code;
-                        this.bookList[i].reserved = true;
+                    if(app.bookList[i].isbn==value){
+                        catChange.push(app.bookList[i].title);
+                        catChange_isbn.push(app.bookList[i].isbn);
+                        if(!app.bookList[i].reserved)catChange_code.push(app.bookList[i].code);
+                        app.cancelList.push(app.bookList[i]);
+                        app.bookList[i].code = app.reservationList[x].books[index].code;
+                        app.bookList[i].reserved = true;
                     }
                 });
             }
             if(catChange.length>0)alert("以下"+catChange.length+"冊の購入区分を「予約購入」に変更しました。\n・"+catChange.join("\n・"));
+            if(catChange_code.length>0){
+                app.content.codeList = catChange_code;
+                postData("multicancel",function(data){
+                    if(data.error||data.res.error)return alert(JSON.stringify(data))
+                });
+            }
             this.reservatorId = this.reservationList[x].reservatorId;
             this.reservator = this.reservationList[x].reservator;
             this.reservationList[x].books.forEach((value)=>{
@@ -206,7 +241,7 @@ var app = new Vue({
                 buf.code = data.res.success[6];
                 app.bookList.push(buf);
                 app.display_isbn=undefined;
-                alert(JSON.stringify(data));
+                //alert(JSON.stringify(data));
             });
         },
     },
@@ -289,16 +324,21 @@ $(function(){
         app.windowWidth = window.innerWidth;
         app.windowHeight = window.innerHeight;
     }
+    window.onbeforeunload = function(){
+        return "正しく購入処理を中止させてからページを離れます。"
+    }
 });
 
 function postData(command,func){
     app.payload.data = JSON.stringify(app.content);
     app.payload.command = command;
     console.log(app.payload);
+    $("button").attr("disabled",true);
     $.post("https://script.google.com/macros/s/AKfycbya4H_U5UB_LAxF07NwMG06rYY0tvUkrOxdQiG0JB4bbybnOZo/exec",
       app.payload,
       function(dt){
         func(dt);
+        $("button").attr("disabled",false);
       }
     );
 }

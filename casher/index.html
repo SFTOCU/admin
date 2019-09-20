@@ -81,6 +81,7 @@
                         <div id="reservationList" class="reservationList" v-bind:style="style_keyboard">
                             <div>予約者一覧</div>
                             <ul v-for="(item, index) in reservationList">
+                                <li><button v-on:click=cancelReservation(index)>×</button></li>
                                 <li>{{item.code}}</li>
                                 <li>{{item.reservator}}</li>
                                 <li>{{item.books.length}}冊</li>
@@ -101,8 +102,8 @@
                         <div id="buttons">
                             <div><button v-if="state==1" v-on:click="makeSum">合計</button></div>
                             <div><button v-if="state==2" v-on:click="nextState">OK</button></div>
-                            <div><button v-if="state==4" v-on:click="confirmPurchase">購入確定</button></div>
-                            <div><button v-if="bookList.length>0" v-on:click="backState">戻る</button></div>
+                            <div><button v-if="state==4" v-on:click="confirmPurchase">購入<br>確定</button></div>
+                            <div><button v-if="bookList.length>0||state!=1" v-on:click="backState">戻る</button></div>
                         </div>
                         <div><button v-if="state==1" v-on:click="showReservations">予約一覧</button></div>
                     </div>

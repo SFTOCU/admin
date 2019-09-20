@@ -27,6 +27,7 @@
     text-align: right;
 }
 .reservationList>ul{
+    padding:6px;
     list-style: none;
     padding: 0;
     display:flex;
@@ -47,5 +48,5 @@
 #buttons button{
     font-size:1.5em;
     width:5em;
-    height: 2.5em;
+    padding:6px;
 }
