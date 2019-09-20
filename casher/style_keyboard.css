@@ -12,16 +12,16 @@
     height:300px; 
 }
 #keyboards>div:first-child{
-    transform: rotateY(-90deg) translateZ(40px);
+    transform: rotateY(-90deg) translateZ(100px);
 }
 #keyboards>div:nth-child(2){
-    transform: translateZ(40px)
+    transform: translateZ(100px)
 }
 #keyboards>div:nth-child(3){
-    transform: rotateY(90deg) translateZ(40px);
+    transform: rotateY(90deg) translateZ(100px);
 }
 #keyboards>div:nth-child(4){
-    transform: rotateY(180deg) translateZ(40px);
+    transform: rotateY(180deg) translateZ(100px);
 }
 .keyboard ul{
     list-style: none;

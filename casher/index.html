@@ -9,13 +9,14 @@
     </head>
     <body>
         <div id="app">
-            <div id="main">
+            <div id="main" v-if="authcheck">
                 <div id="input" v-bind:style="style_inp">
                     <div>
-                        <label for="input_isbn"><span>ISBNを入力</span></label><input id="input_isbn" type="number" maxlength="13" /><button>Check!</button>
+                        <label for="input_isbn"><span>ISBNを入力</span></label><input id="input_isbn" type="number" v-model="display_isbn" v-on:change="isbnAutoCheck(0);" maxlength="13" max="9999999999999"/><button v-on:click="isbnAutoCheck(1);">Check!</button>
                     </div>
                 </div>
                 <div id="booklist" class="bookList" v-bind:style="style_books">
+                    <div>予約者:<span>{{reservator?reservator+" 様":" ナ シ "}}</span></div>
                     <ul v-for="(item, index) in bookList">
                         <li><button v-on:click="deleteBook(index);">×</button></li>
                         <li>{{item.isbn}}</li>
@@ -30,22 +31,22 @@
                             <ul>
                                 <li>
                                     <ul>
-                                        <li>7</li><li>8</li><li>9</li>
+                                        <button v-on:click="editISBN(7);"><li>7</li></button><button v-on:click="editISBN(8);"><li>8</li></button><button v-on:click="editISBN(9);"><li>9</li></button>
                                     </ul>
                                 </li>
                                 <li>
                                     <ul>
-                                        <li>4</li><li>5</li><li>6</li>
+                                        <button v-on:click="editISBN(4);"><li>4</li></button><button v-on:click="editISBN(5);"><li>5</li></button><button v-on:click="editISBN(6);"><li>6</li></button>
                                     </ul>
                                 </li>
                                 <li>
                                     <ul>
-                                        <li>1</li><li>2</li><li>3</li>
+                                        <button v-on:click="editISBN(1);"><li>1</li></button><button v-on:click="editISBN(2);"><li>2</li></button><button v-on:click="editISBN(3);"><li>3</li></button>
                                     </ul>
                                 </li>
                                 <li>
                                     <ul>
-                                        <li>0</li><li>9784</li><li>del</li>
+                                        <button v-on:click="editISBN(0);"><li>0</li></button><button v-if="display_isbn" v-on:click="editISBN(-1);"><li>Del</li></button><button v-else v-on:click="editISBN(9784);"><li>9784</li></button><button v-on:click="editISBN(-2);"><li>Clear</li></button>
                                     </ul>
                                 </li>
                             </ul>
@@ -72,20 +73,20 @@
                                 </li>
                                 <li>
                                     <ul>
-                                        <button v-on:click="editPrice(0);"><li>0</li></button><button v-on:click="editPrice(-1);"><li>del</li></button><button v-on:click="confirmPrice"><li>確定</li></button>
+                                        <button v-on:click="editPrice(0);"><li>0</li></button><button v-on:click="editPrice(-2);"><li>Clear</li></button><button v-on:click="confirmPrice"><li>確定</li></button>
                                     </ul>
                                 </li>
                             </ul>
                         </div>
                         <div id="reservationList" class="reservationList" v-bind:style="style_keyboard">
                             <div>予約者一覧</div>
-                            <ul v-for="item in reservationList">
+                            <ul v-for="(item, index) in reservationList">
                                 <li>{{item.code}}</li>
-                                <li>{{item.name}}</li>
+                                <li>{{item.reservator}}</li>
                                 <li>{{item.books.length}}冊</li>
-                                <li><button>購入</button></li>
+                                <li><button v-on:click="addCartFromReservation(index)">読み込み</button></li>
                             </ul>
-                            <div><button></button></div>
+                            <div><button v-on:click="showReservations">予約問い合わせ</button></div>
                         </div>
                         <div v-bind:style="style_keyboard"></div>
                     </div>
@@ -101,9 +102,9 @@
                             <div><button v-if="state==1" v-on:click="makeSum">合計</button></div>
                             <div><button v-if="state==2" v-on:click="nextState">OK</button></div>
                             <div><button v-if="state==4" v-on:click="confirmPurchase">購入確定</button></div>
-                            <div><button v-if="state!=1" v-on:click="backState">戻る</button></div>
+                            <div><button v-if="bookList.length>0" v-on:click="backState">戻る</button></div>
                         </div>
-                        <div><button v-if="state==1">予約一覧</button></div>
+                        <div><button v-if="state==1" v-on:click="showReservations">予約一覧</button></div>
                     </div>
                 </div>
             </div>
