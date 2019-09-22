@@ -89,7 +89,7 @@
                             </ul>
                             <div><button v-on:click="showReservations">予約問い合わせ</button></div>
                         </div>
-                        <div v-bind:style="style_keyboard"></div>
+                        <div v-bind:style="style_keyboard"><div v-if="purchasecode">レシート番号</div><div>{{purchasecode}}</div></div>
                     </div>
                     <div id="process" v-bind:style="style_process">
                         <div id="sum">
@@ -101,8 +101,8 @@
                         </div>
                         <div id="buttons">
                             <div><button v-if="state==1" v-on:click="makeSum">合計</button></div>
-                            <div><button v-if="state==2" v-on:click="nextState">OK</button></div>
-                            <div><button v-if="state==4" v-on:click="confirmPurchase">購入<br>確定</button></div>
+                            <div><button v-if="state==2||state==4" v-on:click="nextState">OK</button></div>
+                            <div><button v-if="state==5" v-on:click="confirmPurchase">購入<br>確定</button></div>
                             <div><button v-if="bookList.length>0||state!=1" v-on:click="backState">戻る</button></div>
                         </div>
                         <div><button v-if="state==1" v-on:click="showReservations">予約一覧</button></div>

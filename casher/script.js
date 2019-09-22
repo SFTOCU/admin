@@ -9,10 +9,12 @@ var app = new Vue({
         buf_price:undefined,
         reservator:undefined,
         reservatorId:undefined,
+        staff:undefined,
         display_isbn:undefined,
         display_priceSum:undefined,
         display_payment:undefined,
         display_change:undefined,
+        purchasecode:undefined,
         payload:{
             command:"",//check,purchase
             data:"",
@@ -89,6 +91,7 @@ var app = new Vue({
         makeSum:function(){
             if(this.state!=1)return alert("購入処理を進められません。現在の操作を完了してください。")
             if(isNaN(this.priceSum))return alert("購入処理を進められません。全ての書籍の金額を設定してください。")
+            if(this.priceSum==0)return 
             this.display_priceSum = this.priceSum;
             this.state=2;
         },
@@ -132,16 +135,37 @@ var app = new Vue({
             }
         },
         nextState:function(){
-            if(this.state!=2)return alert("購入処理を進められません。現在の操作を完了してください。")
-            this.state=3;
+            if(this.state!=2&&this.state!=4)return alert("購入処理を進められません。現在の操作を完了してください。")
+            if(this.state==2)this.state=3;
+            else{
+                var buf = [];
+                this.bookList.forEach((value)=>{
+                    buf.push(value.code);
+                });
+                this.content.paymentData = {
+                    userName:this.reservator,
+                    staffName:this.staff,
+                    price:this.display_priceSum,
+                    payment:this.display_payment,
+                    change:this.display_change,
+                    codeList:buf
+                };
+                postData("record",function(data){
+                    if(data.error||data.res.error)return alert(JSON.stringify(data))
+                    app.purchasecode = data.res.success;
+                    app.state = 5;
+                });
+                
+            }
         },
         confirmPurchase:function(){
-            if(this.state!=4)return alert("購入処理を進められません。現在の操作を完了してください。")
+            if(this.state!=5)return alert("購入処理を進められません。現在の操作を完了してください。")
             var buf = [];
             this.bookList.forEach((value)=>{
                 buf.push(value.code);
             });
             this.content.codeList = buf;
+            this.content.purchasecode = this.purchasecode;
             postData("purchase",function(data){
                 if(data.error||data.res.error)return alert(JSON.stringify(data))
                 app.display_priceSum = undefined;
@@ -150,6 +174,7 @@ var app = new Vue({
                 app.display_change = undefined;
                 app.reservator = undefined;
                 app.reservatorId = undefined;
+                app.purchasecode = undefined;
                 app.cancelList = new Array();
                 app.bookList = new Array();
                 app.state=1;
@@ -314,6 +339,7 @@ $(function(){
             alert(data.error);
         }
         else{
+            app.staff = prompt("認証完了しました。操作者名を入力してください。");
             app.authcheck = true;
         }
     
