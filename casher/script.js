@@ -96,12 +96,13 @@ var app = new Vue({
             this.state=2;
         },
         backState:function(){
+            alert(this.state);
             if(this.state==0){
                 this.editting=-1;
                 this.buf_price=undefined;
                 this.state=1;
             }
-            if(this.state==1){
+            else if(this.state==1){
                 if(!confirm("読み込んだ全ての書籍を消去して購入処理を中止します"))return
                 var buf = [];
                 this.bookList.forEach((value)=>{
