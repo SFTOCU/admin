@@ -34,7 +34,7 @@
     justify-content: space-around;
 }
 .reservationList{
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 
 #sum>ul{

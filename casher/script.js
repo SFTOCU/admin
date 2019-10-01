@@ -134,6 +134,7 @@ var app = new Vue({
                 this.state=3;
             }
             else if(this.state==-1){
+                $(".reservationList").css("overflow-y","hidden");
                 this.state=1;
             }
         },
@@ -184,11 +185,11 @@ var app = new Vue({
             });
         },
         showReservations:function(){
-            
                 postData("inquiry",function(data){
                     if(data.error)return alert(data.error);
                     app.reservationList = data.res;
-                    if(data.res.length==0)alert("予約はありません。");
+                    if(data.res.length==0)return alert("予約はありません。");
+                    $(".reservationList").css("overflow-y","scroll");
                 });//予約の問い合わせ
             
             this.state=-1;
@@ -248,6 +249,7 @@ var app = new Vue({
             this.reservationList[x].books.forEach((value)=>{
                 if(catChange_isbn.indexOf(value.isbn)==-1)this.bookList.push(value);
             });
+            $(".reservationList").css("overflow-y","hidden");
             this.state=1;
         },
         isbnAutoCheck:function(x){
@@ -295,7 +297,7 @@ var app = new Vue({
             }
             else buf="rotateY(180deg)";
             return{
-                width:(this.windowWidth*0.6-5)+"px",
+                width:(this.windowWidth*0.65-5)+"px",
                 height:(this.windowHeight*0.55-5)+"px",
                 transform:buf,
             }
@@ -321,7 +323,7 @@ var app = new Vue({
         },
         style_buttons:function(){
             return {
-                width:(this.windowWidth*0.4-5)+"px",
+                width:(this.windowWidth*0.35-5)+"px",
                 height:(this.windowHeight*0.25-5)+"px",
             }
         },
