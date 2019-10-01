@@ -96,7 +96,7 @@ var app = new Vue({
             this.state=2;
         },
         backState:function(){
-            alert(this.state);
+            //alert(this.state);
             if(this.state==0){
                 this.editting=-1;
                 this.buf_price=undefined;
@@ -115,6 +115,8 @@ var app = new Vue({
                     if(data.error||data.res.error)return alert(JSON.stringify(data))
                 });
                 this.bookList = [];
+                this.reservator = undefined;
+                this.reservatorId = undefined;
             }
             else if(this.state==2){
                 this.display_priceSum = undefined;
@@ -294,26 +296,27 @@ var app = new Vue({
             else buf="rotateY(180deg)";
             return{
                 width:(this.windowWidth*0.6-5)+"px",
-                height:(this.windowHeight*0.5-5)+"px",
+                height:(this.windowHeight*0.55-5)+"px",
                 transform:buf,
             }
         },
         style_keyboard:function(){
             return {
                 width:(this.windowWidth*0.6-5)+"px",
-                height:(this.windowHeight*0.5-5)+"px",
+                height:(this.windowHeight*0.55-5)+"px",
             }
         },
         style_books:function(){
             return {
                 width:(this.windowWidth-10)+"px",
-                height:(this.windowHeight*0.44)+"px",
+                height:(this.windowHeight*0.4)+"px",                
+                border:"ridge",
             }
         },
         style_process:function(){
             return {
                 width:(this.windowWidth*0.4-5)+"px",
-                height:(this.windowHeight*0.5-5)+"px",
+                height:(this.windowHeight*0.55-5)+"px",
             }
         },
         style_buttons:function(){
@@ -347,9 +350,11 @@ $(function(){
     });
     app.windowWidth = window.innerWidth;
     app.windowHeight = window.innerHeight;
+    if(app.windowHeight<500)app.windowHeight=640;
     onresize=function(){
         app.windowWidth = window.innerWidth;
         app.windowHeight = window.innerHeight;
+        if(app.windowHeight<500)app.windowHeight=640;
     }
     window.onbeforeunload = function(){
         return "正しく購入処理を中止させてからページを離れます。"
